@@ -1,0 +1,43 @@
+Görüntü işleme alanında yaygın kullanılan renk uzaylarını (RGB, HSV, YUV, CIE Lab, Gray scale, vb.) araştırınız.
+Avantajları ve dezavantajları nelerdir? 
+Hangi problemlerde hangi renk uzayı tercih edilir?
+
+1-)RGB (Red, Green, Blue)
+Işığın eklemeli karışımına dayanır. Kırmızı, yeşil ve mavi ana renklerinin 0-255 arasında değişen yoğunluk bileşenlerinden oluşur (3 kanallı).
+Avantajları:
+Dijital kameralar, ekranlar ve standart görüntü dosyaları (PNG, JPEG) bu formatta veri üretir ve kaydeder; ekstra dönüşüm maliyeti yoktur.
+İnsan gözünün koni hücrelerinin (kırmızı, yeşil, mavi) çalışma prensibine yakın bir temel kurar.
+Dezavantajları:
+Aydınlatmaya karşı çok duyarlıdır: Gölge, parlama veya ışık değişimleri R, G, B değerlerinin üçünü de aynı anda etkiler, bu da nesne takibini ve renk tabanlı segmentasyonu zorlaştırır.
+Kanallar yüksek düzeyde korelasyon içerir (renk bilgisi ile parlaklık bilgisi ayrışmamıştır).
+Korelasyon: RGB renk uzayındaki Kırmızı (R), Yeşil (G) ve Mavi (B) kanallarının birbirine çok bağımlı çalıştığını ve parlaklık (ışık) ile renk bilgisinin iç içe geçmiş olduğunu ifade eder.
+Tercih Edildiği Problemler: Standart görselleştirme, ekran tabanlı gösterme ve renk bilgisinin kritik olmadığı genel görüntü işleme görevleri.
+2-)Grayscale (Gri Seviye)
+Renk bilgisini tamamen atarak görüntüyü tek bir kanal (genellikle 0-255 arası parlaklık değeri) haline getirir.
+Avantajları:
+Veri boyutunu 3 kat azaltır , işlem süresini hızlandırır.
+Geometrik dönüşümler, kenar tespiti (Canny, Sobel) ve şekil analizi gibi birçok işlemde renk bilgisine gerek yoktur.
+Dezavantajları: Renk ayrımı yapılamaz; örneğin kırmızı ve mavi nesneler aynı gri tonunda görünebilir.
+Tercih Edildiği Problemler: OCR (Karakter Tanıma), yüz tespiti (Haar Cascades), plaka tanıma, kenar tespiti ve optik akış algoritmaları.
+3-)HSV / HSB (Hue, Saturation, Value / Brightness)
+Renkleri insan algısına daha uygun üç bileşene ayırır:
+Hue (Ton): Rengin kendisi (0-360 derece açısal değer).
+Saturation (Doygunluk): Rengin saflığı/canlılığı.
+Value (Değer/Parlaklık): Işığın şiddeti.
+Avantajları:
+Renk bilgisi (Hue) ile aydınlatma bilgisi (Value) birbirinden bağımsızdır. Bu sayede gölgeli veya parlak ortamlarda bile aynı nesne kolayca tespit edilebilir.
+Renk eşikleme (color thresholding) işlemleri RGB'ye kıyasla çok daha sezgiseldir.
+Dezavantajları: Düşük aydınlatma veya düşük doygunluk durumlarında (siyah, beyaz veya griye yakın renkler) Hue değeri kararsızlaşır ve gürültüye açık hale gelir (sıfıra bölünme veya ani salınımlar).
+Tercih Edildiği Problemler: Renk tabanlı nesne takibi (örn. kamerada sadece kırmızı bir topu takip etmek), trafik lambası tespiti, yeşil perde (chroma key) uygulamaları ve cilt rengi segmentasyonu.
+4-) YUV / YCbCr
+Parlaklık (Y - Luminance) ve renk/kromatik bileşenler (U/V veya Cb/Cr - Chrominance) olarak veriyi böler.
+Avantajları:
+İnsan gözü parlaklık değişimlerine renkten çok daha duyarlıdır. Bu uzay, insan gözünün bu zaafından yararlanarak renk verilerini sıkıştırıp bant genişliği tasarrufu sağlar.
+Dezavantajları: Doğrudan insan gözüyle görsel yorumlama yapmak RGB kadar sezgisel değildir.
+Tercih Edildiği Problemler: Video sıkıştırma ve iletimi (JPEG, MPEG, H.264), televizyon yayıncılığı ve video işleme pipeline'ları.
+5-) CIE Lab (L*a*b*)
+Algısal olarak düzgün (perceptually uniform) bir renk uzayıdır. L* parlaklığı, a* yeşilden kırmızıya, b* ise maviden sarıya olan eksenleri temsil eder.
+Avantajları:Uzaydaki Öklid mesafesi, insan gözünün algıladığı renk farkına doğrudan karşılık gelir ($\Delta E$ hesaplamaları için idealdir).
+Cihazdan bağımsızdır (ekran veya kamera kalibrasyonlarından bağımsız standart renk temsili sağlar).
+Dezavantajları: RGB'den Lab'e matematiksel dönüşüm karmaşıktır ve yüksek işlem gücü gerektirir.
+Tercih Edildiği Problemler: Endüstriyel renk kalitesi kontrolü (tekstil, boya), gelişmiş renk düzeltme (color grading) ve hassas renk tabanlı segmentasyon (örn. K-Means kümeleme ile görüntü bölütleme).
